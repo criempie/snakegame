@@ -4,6 +4,7 @@ const gameConfig: IGameConfig = {
     cellSize: 16,
     cellsInRow: 25,
     cellsInColumn: 25,
+    fps: 6,
 };
 
 export default gameConfig;

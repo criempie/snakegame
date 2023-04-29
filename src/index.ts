@@ -5,7 +5,7 @@ function main() {
     if (!appElement) return;
 
     const game = new Game(appElement);
-    game.render();
+    game.start();
 }
 
 main();

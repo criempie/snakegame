@@ -2,6 +2,7 @@ export interface IGameConfig {
     cellSize: number;
     cellsInRow: number;
     cellsInColumn: number;
+    fps: number;
 }
 
 export interface IRenderConfig {
