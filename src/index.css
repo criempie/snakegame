@@ -12,11 +12,4 @@ html, body {
 #app {
     width: 100%;
     height: 100%;
-
-    background-color: #353336;
-}
-
-.canvas {
-    border-radius: 12px;
-    background-color: #161618;
 }
