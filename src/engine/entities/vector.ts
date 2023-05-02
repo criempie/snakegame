@@ -2,7 +2,7 @@ export class Vector {
     public x: number;
     public y: number;
 
-    constructor(x: number, y: number) {
+    constructor(x: number = 0, y: number = 0) {
         this.x = x;
         this.y = y;
     }
@@ -10,6 +10,13 @@ export class Vector {
     public multiply(n: number) {
         this.x *= n;
         this.y *= n;
+
+        return this;
+    }
+
+    public addition(v: Vector) {
+        this.x += v.x;
+        this.y += v.y;
 
         return this;
     }

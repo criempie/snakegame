@@ -5,6 +5,7 @@ export class Game {
 
     constructor(rootElement: HTMLElement) {
         const canvasElement = document.createElement('canvas');
+        canvasElement.tabIndex = 0;
         rootElement.appendChild(canvasElement);
 
         this._engine = new Engine(canvasElement);

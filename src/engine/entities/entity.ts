@@ -1,19 +1,30 @@
+import { KeyboardKeyCode } from '../controls';
+import { StaticEntity } from './staticEntity';
 import { Vector } from './vector';
 
-export class Entity {
-    protected _position: Vector;
-    protected _size: Vector;
+export interface Entity {
+    afterUpdate?(): void;
+}
 
-    public get position() {
-        return this._position.clone();
-    }
+export type EntityControls = { [key in KeyboardKeyCode]?: Function };
 
-    public get size() {
-        return this._size.clone();
+export abstract class Entity extends StaticEntity {
+    protected _direction: Vector;
+    protected _speed: number;
+    protected _controls: EntityControls = {};
+
+    public get controls() {
+        return Object.assign({}, this._controls);
     }
 
     constructor(x: number, y: number, w: number, h: number) {
-        this._position = new Vector(x, y);
-        this._size = new Vector(w, h);
+        super(x, y, w, h);
+
+        this._direction = new Vector();
+        this._speed = 0;
+    }
+
+    public update() {
+        this._position.addition(this._direction.clone().multiply(this._speed));
     }
 }
