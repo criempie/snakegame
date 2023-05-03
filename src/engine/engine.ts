@@ -1,41 +1,34 @@
-import { Controls } from './controls';
-import { Entity, StaticEntity } from './entities';
+import { Level } from '~/engine/entities/level';
+import { ControlsManager } from './controlsManager';
 import { Loop } from './loop';
 import { CanvasRender } from './render';
 
 export class Engine {
     private _renderer: CanvasRender;
     private _loop: Loop;
-    private _entities: (Entity | StaticEntity)[] = [];
-    private _controls: Controls;
+    private _controlsManager: ControlsManager;
 
-    constructor(canvasElement: HTMLCanvasElement) {
+    private _functionsToUpdate: Function[] = [];
+
+    constructor(canvasElement: HTMLCanvasElement, ups: number) {
         this._renderer = new CanvasRender(canvasElement);
-        this._loop = new Loop(30, this._update.bind(this), this._render.bind(this));
-        this._controls = new Controls(canvasElement);
+        this._loop = new Loop(ups, this._update.bind(this), this._render.bind(this));
+        this._controlsManager = new ControlsManager(canvasElement);
     }
 
     public start() {
         this._loop.start();
-        this._controls.init();
+        this._controlsManager.init();
     }
 
-    public addEntity(entity: Entity | StaticEntity) {
-        this._entities.push(entity);
-        this._renderer.add(entity);
-
-        if (entity instanceof Entity) {
-            this._controls.registerEntityControls(entity);
-        }
+    public processLevel(lvl: Level) {
+        this._functionsToUpdate.push(lvl.update);
+        this._renderer.add(lvl);
+        this._controlsManager.registerControls(lvl.controls);
     }
 
     private _update(dt: number) {
-        this._entities.forEach((e) => {
-            if (e instanceof Entity) {
-                e.update();
-                e.afterUpdate && e.afterUpdate();
-            }
-        });
+        this._functionsToUpdate.forEach((fn) => fn());
     }
 
     private _render() {

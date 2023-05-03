@@ -7,6 +7,13 @@ export class Vector {
         this.y = y;
     }
 
+    public multiplyComponents(v: Vector) {
+        this.x *= v.x;
+        this.y *= v.y;
+
+        return this;
+    }
+
     public multiply(n: number) {
         this.x *= n;
         this.y *= n;

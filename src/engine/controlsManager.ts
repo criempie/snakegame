@@ -1,10 +1,10 @@
-import { Entity } from './entities';
+import { EntityControls } from './entities';
 
 export enum KeyboardKeyCode {
     W = 'KeyW', A = 'KeyA', S = 'KeyS', D = 'KeyD', SPACE = 'Space'
 }
 
-export class Controls {
+export class ControlsManager {
     private _callbacks: Map<KeyboardKeyCode | string, Function[]> = new Map();
 
     constructor(private _elementToObserve: HTMLElement) {
@@ -16,10 +16,10 @@ export class Controls {
         this._elementToObserve.addEventListener('keypress', this._listener.bind(this));
     }
 
-    public registerEntityControls(entity: Entity) {
-        Object.entries(entity.controls)
-              .forEach(([ key, fn ]) => {
-                  this._callbacks.get(key)?.push(fn);
+    public registerControls(controls: EntityControls) {
+        Object.entries(controls)
+              .forEach(([ key, fns ]) => {
+                  this._callbacks.get(key)?.push(...fns);
               });
     }
 
@@ -30,8 +30,6 @@ export class Controls {
     private _listener(event: KeyboardEvent) {
         const keyCode = event.code;
         const callbacks = this._callbacks.get(keyCode);
-
-        console.log(event);
 
         if (callbacks) {
             callbacks.forEach((c) => c());

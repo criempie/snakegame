@@ -1,4 +1,4 @@
-import { KeyboardKeyCode } from '../controls';
+import { EntityControls } from '~/engine/entities/types';
 import { StaticEntity } from './staticEntity';
 import { Vector } from './vector';
 
@@ -6,7 +6,6 @@ export interface Entity {
     afterUpdate?(): void;
 }
 
-export type EntityControls = { [key in KeyboardKeyCode]?: Function };
 
 export abstract class Entity extends StaticEntity {
     protected _direction: Vector;

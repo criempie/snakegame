@@ -1,3 +1,4 @@
+import globalConfig from '~/game/config/global.config';
 import { IDrawable } from './types';
 
 export class CanvasRender {
@@ -25,7 +26,7 @@ export class CanvasRender {
     }
 
     private _drawBackground = this._drawWrapper(() => {
-        this._ctx.fillStyle = '#444455';
+        this._ctx.fillStyle = globalConfig.backgroundColor;
         this._ctx.fillRect(0, 0, this._canvas.width, this._canvas.height);
     });
 
