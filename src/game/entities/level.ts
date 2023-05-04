@@ -7,8 +7,8 @@ export class MyLevel extends Level<Snake | Berry>{
         super();
 
         this._entities = [
-            new Snake(128, 128),
-            new Berry(16, 16),
+            new Snake(5, 5),
+            new Berry(0, 0),
         ];
     }
 }

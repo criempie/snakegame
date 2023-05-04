@@ -1,20 +1,29 @@
 import { StaticEntity } from '~/engine/entities';
 import globalConfig from '~/game/config/global.config';
+import { relativeToAbsolute } from '~/game/lib';
 
 export class Berry extends StaticEntity {
-    private readonly _padding: number;
+    private readonly _naturalOffset: number;
+
+    private get _absolutePosition() {
+        return relativeToAbsolute(this._position);
+    }
 
     constructor(x: number, y: number) {
-        const padding = Math.floor(globalConfig.cellSize / 4);
-        const size = globalConfig.cellSize - padding / 2;
+        const absPos = relativeToAbsolute(x, y);
 
-        super(x, y, size, size);
-        this._padding = padding;
+        const naturalOffset = globalConfig.cellSize * 0.2;
+        const size = globalConfig.cellSize - naturalOffset * 2;
+
+        super(absPos.x, absPos.y, size, size);
+        this._naturalOffset = naturalOffset;
 
     }
 
     public render(ctx: CanvasRenderingContext2D) {
+        const absPos = this._absolutePosition;
+
         ctx.fillStyle = globalConfig.berryColor;
-        ctx.fillRect(this._position.x + this._padding, this._position.y + this._padding, this._size.x, this._size.y);
+        ctx.fillRect(absPos.x + this._naturalOffset, absPos.y + this._naturalOffset, this._size.x, this._size.y);
     }
 }

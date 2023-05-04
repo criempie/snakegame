@@ -21,9 +21,16 @@ export class Vector {
         return this;
     }
 
-    public addition(v: Vector) {
-        this.x += v.x;
-        this.y += v.y;
+    public addition(n: number): Vector
+    public addition(v: Vector): Vector
+    public addition(nOrV: number | Vector) {
+        if (typeof nOrV === 'number') {
+            this.x += nOrV;
+            this.y += nOrV;
+        } else {
+            this.x += nOrV.x;
+            this.y += nOrV.y;
+        }
 
         return this;
     }
