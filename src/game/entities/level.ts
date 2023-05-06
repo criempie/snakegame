@@ -10,10 +10,10 @@ export class MyLevel extends Level<Snake | Berry> {
     private _berry: Berry;
     private _randGenerator: RandomGenerator;
 
-    constructor() {
+    constructor(private _gameOverFn: Function) {
         super();
 
-        this._snake = new Snake(2, 2);
+        this._snake = new Snake(2, 2, this._gameOver.bind(this));
         this._berry = new Berry(0, 0);
 
         this._entities = [
@@ -30,6 +30,10 @@ export class MyLevel extends Level<Snake | Berry> {
         }
 
         super.update();
+    }
+
+    private _gameOver() {
+        this._gameOverFn();
     }
 
     private _berryPickup() {

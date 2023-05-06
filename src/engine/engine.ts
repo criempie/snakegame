@@ -18,7 +18,12 @@ export class Engine {
 
     public start() {
         this._loop.start();
-        this._controlsManager.init();
+        this._controlsManager.start();
+    }
+
+    public stop() {
+        this._loop.stop();
+        this._controlsManager.stop();
     }
 
     public processLevel(lvl: Level) {

@@ -1,12 +1,25 @@
 export class Loop {
     private _lastUpdate?: number;
+    private _isStop: boolean = true;
 
     constructor(private _frequency: number, private _update: (dt: number) => void,
                 private _render: () => void) {
-        this.start = this.start.bind(this);
+
+        this._run = this._run.bind(this);
+        this._run();
     }
 
     public start() {
+        this._isStop = true;
+    }
+
+    public stop() {
+        this._isStop = false;
+    }
+
+    private _run() {
+        if (!this._isStop) return;
+
         const now = Date.now();
 
         const dt = now - (this._lastUpdate ?? 0);
@@ -18,6 +31,6 @@ export class Loop {
             this._render();
         }
 
-        requestAnimationFrame(this.start);
+        requestAnimationFrame(this._run);
     }
 }

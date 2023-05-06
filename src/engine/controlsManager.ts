@@ -12,8 +12,12 @@ export class ControlsManager {
               .forEach((k) => this._callbacks.set(k, []));
     }
 
-    public init() {
+    public start() {
         this._elementToObserve.addEventListener('keypress', this._listener.bind(this));
+    }
+
+    public stop() {
+        this._elementToObserve.removeEventListener('keypress', this._listener.bind(this));
     }
 
     public registerControls(controls: EntityControls) {
