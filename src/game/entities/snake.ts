@@ -23,10 +23,10 @@ class TailCell extends StaticEntity {
 
 export class Snake extends Entity {
     _controls: EntityControls = {
-        [KeyboardKeyCode.W]: [ () => this._direction = new Vector(0, -1) ],
-        [KeyboardKeyCode.S]: [ () => this._direction = new Vector(0, 1) ],
-        [KeyboardKeyCode.A]: [ () => this._direction = new Vector(-1, 0) ],
-        [KeyboardKeyCode.D]: [ () => this._direction = new Vector(1, 0) ],
+        [KeyboardKeyCode.W]: [ () => this._changeDirection('up') ],
+        [KeyboardKeyCode.S]: [ () => this._changeDirection('down') ],
+        [KeyboardKeyCode.A]: [ () => this._changeDirection('left') ],
+        [KeyboardKeyCode.D]: [ () => this._changeDirection('right') ],
     };
 
     private _tail: TailCell[] = [];
@@ -35,7 +35,7 @@ export class Snake extends Entity {
         return relativeToAbsolute(this._position);
     }
 
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, public onDeath?: Function) {
         super(x, y, globalConfig.cellSize, globalConfig.cellSize);
 
         this._direction = new Vector(1, 0);
@@ -54,6 +54,10 @@ export class Snake extends Entity {
             lastTailCell.update(prevHeadPosition);
             this._tail.unshift(lastTailCell);
         }
+
+        if (this._checkCollision()) {
+            if (this.onDeath) this.onDeath();
+        }
     }
 
     public render(ctx: CanvasRenderingContext2D): void {
@@ -70,16 +74,53 @@ export class Snake extends Entity {
     }
 
     public getSimpleCoords() {
-        const result: [number, number][] = [];
+        const result: [ number, number ][] = [];
 
-        result.push([this._position.x, this._position.y]);
-        this._tail.forEach((t) => result.push([t.position.x, t.position.y]));
+        result.push([ this._position.x, this._position.y ]);
+        this._tail.forEach((t) => result.push([ t.position.x, t.position.y ]));
 
         return result;
     }
 
+    private _changeDirection(newDir: 'up' | 'down' | 'right' | 'left') {
+        switch (newDir) {
+            case 'up': {
+                const up = new Vector(0, -1);
+                if (!this._direction.clone().multiply(-1).isEqual(up)) {
+                    this._direction = up;
+                }
+                break;
+            }
+            case 'down': {
+                const down = new Vector(0, 1);
+                if (!this._direction.clone().multiply(-1).isEqual(down)) {
+                    this._direction = down;
+                }
+                break;
+            }
+            case 'left': {
+                const left = new Vector(-1, 0);
+                if (!this._direction.clone().multiply(-1).isEqual(left)) {
+                    this._direction = left;
+                }
+                break;
+            }
+            case 'right': {
+                const right = new Vector(1, 0);
+                if (!this._direction.clone().multiply(-1).isEqual(right)) {
+                    this._direction = right;
+                }
+                break;
+            }
+        }
+    }
+
     private _genTail(length: number) {
         this._tail.push(...this._createTailContinuation(length));
+    }
+
+    private _checkCollision() {
+        return this._tail.reduce((acc, t) => acc || t.position.isEqual(this._position), false);
     }
 
     private _createTailContinuation(n: number) {
