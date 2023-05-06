@@ -1,7 +1,7 @@
 export default {
-    cellSize: 24,
-    cellsInRow: 12,
-    cellsInColumn: 12,
+    cellSize: 32,
+    cellsInRow: 24,
+    cellsInColumn: 24,
     canvasPadding: 12,
 
     backgroundColor: '#161618',

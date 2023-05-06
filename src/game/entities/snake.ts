@@ -65,16 +65,35 @@ export class Snake extends Entity {
         this._tail.forEach((t) => t.render(ctx));
     }
 
-    private _genTail(length: number) {
-        const tailDirection = this._direction.clone().multiply(-1);
+    public increaseTail() {
+        this._tail.push(...this._createTailContinuation(1));
+    }
 
-        for (let i = 1; i <= length; i++) {
-            const position = this._position.clone();
-            position.addition(tailDirection.clone().multiply(i));
+    public getSimpleCoords() {
+        const result: [number, number][] = [];
+
+        result.push([this._position.x, this._position.y]);
+        this._tail.forEach((t) => result.push([t.position.x, t.position.y]));
+
+        return result;
+    }
+
+    private _genTail(length: number) {
+        this._tail.push(...this._createTailContinuation(length));
+    }
+
+    private _createTailContinuation(n: number) {
+        const tailDirection = this._direction.clone().multiply(-1);
+        const result = [];
+        const position = this._tail[this._tail.length - 1]?.position.clone() ?? this._position.clone();
+        for (let i = 1; i <= n; i++) {
+            position.addition(tailDirection.clone().multiply(this._speed).multiply(i));
 
             const tailCell = new TailCell(position);
 
-            this._tail.push(tailCell);
+            result.push(tailCell);
         }
+
+        return result;
     }
 }

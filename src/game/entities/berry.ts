@@ -1,4 +1,4 @@
-import { StaticEntity } from '~/engine/entities';
+import { StaticEntity, Vector } from '~/engine/entities';
 import globalConfig from '~/game/config/global.config';
 import { relativeToAbsolute } from '~/game/lib';
 
@@ -18,6 +18,10 @@ export class Berry extends StaticEntity {
         super(absPos.x, absPos.y, size, size);
         this._naturalOffset = naturalOffset;
 
+    }
+
+    public setNewPosition(newPos: Vector) {
+        this._position = newPos.clone();
     }
 
     public render(ctx: CanvasRenderingContext2D) {

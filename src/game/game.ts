@@ -10,7 +10,7 @@ export class MyGame extends Game {
 
     constructor(rootElement: HTMLElement) {
         super(rootElement, {
-            ups: 8,
+            ups: 12,
             canvasSize: new Vector(
                 relativeToAbsolute(globalConfig.cellsInRow) + globalConfig.canvasPadding,
                 relativeToAbsolute(globalConfig.cellsInColumn) + globalConfig.canvasPadding

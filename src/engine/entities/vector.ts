@@ -7,6 +7,10 @@ export class Vector {
         this.y = y;
     }
 
+    public static fromSimple(p: [number, number]) {
+        return new Vector(p[0], p[1]);
+    }
+
     public multiplyComponents(v: Vector) {
         this.x *= v.x;
         this.y *= v.y;
@@ -35,7 +39,15 @@ export class Vector {
         return this;
     }
 
+    public isEqual(v: Vector) {
+        return this.x === v.x && this.y === v.y;
+    }
+
     public clone() {
         return new Vector(this.x, this.y);
+    }
+
+    public toSimple() {
+        return [this.x, this.y];
     }
 }
