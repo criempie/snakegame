@@ -35,6 +35,14 @@ export class Snake extends Entity {
         return relativeToAbsolute(this._position);
     }
 
+    public get position() {
+        return super.position;
+    }
+
+    public set position(newPos: Vector) {
+        this._position = newPos;
+    }
+
     constructor(x: number, y: number, public onDeath?: Function) {
         super(x, y, globalConfig.cellSize, globalConfig.cellSize);
 

@@ -30,6 +30,28 @@ export class MyLevel extends Level<Snake | Berry> {
         }
 
         super.update();
+        this._bordersCollision();
+    }
+
+    private _bordersCollision() {
+        const left = this._snake.position.x >= 0;
+        const right = this._snake.position.x <= globalConfig.cellsInRow;
+        const up = this._snake.position.y >= 0;
+        const down = this._snake.position.y <= globalConfig.cellsInColumn;
+
+        if (!left) {
+            const offset = new Vector(globalConfig.cellsInRow, 0);
+            this._snake.position = this._snake.position.addition(offset);
+        } else if (!right) {
+            const offset = new Vector(globalConfig.cellsInRow, 0);
+            this._snake.position = this._snake.position.addition(offset.multiply(-1));
+        } else if (!up) {
+            const offset = new Vector(0, globalConfig.cellsInColumn);
+            this._snake.position = this._snake.position.addition(offset);
+        } else if (!down) {
+            const offset = new Vector(0, globalConfig.cellsInColumn);
+            this._snake.position = this._snake.position.addition(offset.multiply(-1));
+        }
     }
 
     private _gameOver() {
