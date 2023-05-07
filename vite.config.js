@@ -2,6 +2,7 @@ import path from 'path';
 
 export default {
     root: './src',
+    base: '/snakegame/',
     publicDir: '../public',
     resolve: {
         alias: {
